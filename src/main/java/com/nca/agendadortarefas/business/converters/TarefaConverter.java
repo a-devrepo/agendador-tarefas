@@ -4,6 +4,7 @@ import com.nca.agendadortarefas.business.dto.TarefaDTO;
 import com.nca.agendadortarefas.infrastructure.entities.TarefaEntity;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -40,5 +41,18 @@ public class TarefaConverter {
         return tarefas.stream()
                 .map(this::paraTarefaDTO)
                 .toList();
+    }
+
+    public TarefaEntity updateTarefa(TarefaDTO tarefaDTO, TarefaEntity tarefa) {
+        return TarefaEntity.builder()
+                .id(tarefa.getId())
+                .nomeTarefa(tarefaDTO.getNomeTarefa() != null ? tarefaDTO.getNomeTarefa() : tarefa.getNomeTarefa())
+                .descricao(tarefaDTO.getDescricao() != null ? tarefaDTO.getDescricao() : tarefa.getDescricao())
+                .dataEvento(tarefaDTO.getDataEvento() != null ? tarefaDTO.getDataEvento() : tarefa.getDataEvento())
+                .emailUsuario(tarefaDTO.getEmailUsuario() != null ? tarefaDTO.getEmailUsuario() : tarefa.getEmailUsuario())
+                .dataCriacao(tarefa.getDataCriacao())
+                .dataAlteracao(LocalDateTime.now())
+                .status(tarefa.getStatus())
+                .build();
     }
 }

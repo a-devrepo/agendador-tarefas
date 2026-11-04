@@ -2,6 +2,7 @@ package com.nca.agendadortarefas.controllers;
 
 import com.nca.agendadortarefas.business.TarefaService;
 import com.nca.agendadortarefas.business.dto.TarefaDTO;
+import com.nca.agendadortarefas.infrastructure.enums.StatusNotificacao;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +39,25 @@ public class TarefaController {
     public ResponseEntity<List<TarefaDTO>> buscarTarefasPorEmail(@RequestHeader("Authorization") String token) {
         var tarefas = tarefaService.buscarTarefasAgendadasPorEmail(token);
         return ResponseEntity.ok(tarefas);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deletarPorId(@RequestParam("id") String id) {
+        tarefaService.deletarPorId(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<TarefaDTO> alterarStatusNotificacao(@RequestParam("status") StatusNotificacao status,
+                                                              @RequestParam("id") String id) {
+        var tarefaAtualizada = tarefaService.alterarStatus(status, id);
+        return ResponseEntity.ok(tarefaAtualizada);
+    }
+
+    @PutMapping
+    public ResponseEntity<TarefaDTO> alterarTarefa(@RequestBody TarefaDTO tarefaDTO,
+                                                   @RequestParam("id") String id) {
+        var tarefaAtualizada = tarefaService.alterarTarefa(tarefaDTO, id);
+        return ResponseEntity.ok(tarefaAtualizada);
     }
 }
