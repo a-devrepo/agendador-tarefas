@@ -27,7 +27,6 @@ public class TarefaService {
     public TarefaDTO salvar(TarefaDTO tarefaDTO, String token) {
 
         var email = jwtUtil.extractUsername(token.substring(7));
-        tarefaDTO.setStatus(StatusNotificacao.PENDENTE);
         tarefaDTO.setEmailUsuario(email);
 
         var tarefa = tarefaConverter.paraTarefaEntity(tarefaDTO);
@@ -76,7 +75,7 @@ public class TarefaService {
             var tarefaAtualizada = tarefaRepository.save(tarefa);
             return tarefaConverter.paraTarefaDTO(tarefaAtualizada);
         } catch (ResourceNotFoundException ex) {
-            throw new ResourceNotFoundException("Erro ao alterar status da tarefa com id: " + id, ex.getCause());
+            throw new ResourceNotFoundException("Erro ao alterar tarefa com id: " + id, ex.getCause());
         }
     }
 }
