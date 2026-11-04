@@ -16,8 +16,8 @@ public class UserDetailsServiceImpl {
         this.client = client;
     }
 
-    public UserDetails loadUserDataBy(String email, String token) {
-        var usuarioDTO = client.buscarPorEmail(email, token);
+    public UserDetails loadUserDataBy(String email, String authorizationHeader) {
+        var usuarioDTO = client.buscarPorEmail(email, authorizationHeader);
         return User.withUsername(usuarioDTO.getEmail())
                 .password(usuarioDTO.getSenha())
                 .build();
