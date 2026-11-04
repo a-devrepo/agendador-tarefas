@@ -2,8 +2,12 @@ package com.nca.agendadortarefas.controllers;
 
 import com.nca.agendadortarefas.business.TarefaService;
 import com.nca.agendadortarefas.business.dto.TarefaDTO;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tarefa")
@@ -20,5 +24,19 @@ public class TarefaController {
                                             @RequestHeader("Authorization") String token) {
         var tarefaSalva = tarefaService.salvar(tarefaDTO, token);
         return ResponseEntity.ok(tarefaSalva);
+    }
+
+    @GetMapping("/eventos")
+    public ResponseEntity<List<TarefaDTO>> buscarTarefasAgendadasPorPeriodo(
+            @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicial,
+            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFinal) {
+        var tarefas = tarefaService.buscarTarefasAgendadasPorPeriodo(dataInicial, dataFinal);
+        return ResponseEntity.ok(tarefas);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TarefaDTO>> buscarTarefasPorEmail(@RequestHeader("Authorization") String token) {
+        var tarefas = tarefaService.buscarTarefasAgendadasPorEmail(token);
+        return ResponseEntity.ok(tarefas);
     }
 }

@@ -4,6 +4,8 @@ import com.nca.agendadortarefas.business.dto.TarefaDTO;
 import com.nca.agendadortarefas.infrastructure.entities.TarefaEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class TarefaConverter {
 
@@ -26,5 +28,17 @@ public class TarefaConverter {
                 .dataCriacao(tarefa.getDataCriacao())
                 .status(tarefa.getStatus())
                 .build();
+    }
+
+    public List<TarefaEntity> paraListaTarefaEntity(List<TarefaDTO> tarefasDTO) {
+        return tarefasDTO.stream()
+                .map(this::paraTarefaEntity)
+                .toList();
+    }
+
+    public List<TarefaDTO> paraListaTarefaDTO(List<TarefaEntity> tarefas) {
+        return tarefas.stream()
+                .map(this::paraTarefaDTO)
+                .toList();
     }
 }
